@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XCHIZZURU: ANALYSIS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Russo+One&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #050505;
+            --text-color: #ffffff;
+            --accent-bad: #ff0f0f;
+            --accent-good: #00f2ff;
+            --accent-gold: #ffd700;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
+        }
+
+        /* --- STAGE 1: THE BAD (LOH) --- */
+        #stage-bad {
+            position: absolute;
+            text-align: center;
+            z-index: 10;
+            transition: opacity 0.5s;
+        }
+
+        h1.bad-title {
+            font-family: 'Russo One', sans-serif;
+            font-size: 5rem;
+            color: var(--accent-bad);
+            text-transform: uppercase;
+            text-shadow: 2px 2px 0px #fff;
+            animation: shake 0.5s infinite;
+            margin-bottom: 20px;
+        }
+
+        .bad-desc {
+            font-size: 1.2rem;
+            opacity: 0.7;
+            margin-bottom: 40px;
+            letter-spacing: 2px;
+        }
+
+        .trigger-btn {
+            background: transparent;
+            border: 2px solid var(--accent-bad);
+            color: var(--accent-bad);
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            font-family: 'Russo One', sans-serif;
+            box-shadow: 0 0 10px var(--accent-bad);
+        }
+
+        .trigger-btn:hover {
+            background: var(--accent-bad);
+            color: #000;
+            box-shadow: 0 0 30px var(--accent-bad);
+        }
+
+        /* --- STAGE 2: THE GOOD (COOL) --- */
+        #stage-good {
+            display: none;
+            text-align: center;
+            width: 100%;
+            max-width: 800px;
+            z-index: 20;
+            padding: 20px;
+        }
+
+        .hero-title {
+            font-family: 'Russo One', sans-serif;
+            font-size: 4rem;
+            color: transparent;
+            -webkit-text-stroke: 2px var(--accent-good);
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            position: relative;
+            animation: textReveal 1s ease-out forwards;
+        }
+
+        .hero-title span {
+            color: var(--accent-good);
+            text-shadow: 0 0 20px var(--accent-good);
+        }
+
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+
+        .arg-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--accent-good);
+            padding: 20px;
+            border-radius: 15px;
+            transform: translateY(50px);
+            opacity: 0;
+            backdrop-filter: blur(5px);
+            transition: transform 0.3s;
+        }
+
+        .arg-card:hover {
+            transform: scale(1.05) !important;
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.3);
+            background: rgba(0, 242, 255, 0.1);
+        }
+
+        .arg-title {
+            color: var(--accent-gold);
+            font-weight: 900;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .insta-link {
+            display: inline-block;
+            margin-top: 30px;
+            text-decoration: none;
+            color: #fff;
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            padding: 15px 50px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            animation: float 3s ease-in-out infinite;
+            box-shadow: 0 10px 30px rgba(220, 39, 67, 0.5);
+            transition: transform 0.2s;
+        }
+
+        .insta-link:hover {
+            transform: scale(1.1);
+        }
+
+        /* --- ANIMATIONS --- */
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            30% { transform: translate(3px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            70% { transform: translate(3px, 1px) rotate(-1deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            90% { transform: translate(1px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
+
+        @keyframes textReveal {
+            0% { letter-spacing: -20px; opacity: 0; filter: blur(10px); }
+            100% { letter-spacing: 5px; opacity: 1; filter: blur(0px); }
+        }
+
+        @keyframes cardPop {
+            0% { transform: translateY(50px) scale(0.8); opacity: 0; }
+            100% { transform: translateY(0) scale(1); opacity: 1; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Glitch Overlay */
+        .glitch-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #fff;
+            z-index: 100;
+            display: none;
+            mix-blend-mode: exclusion;
+        }
+
+        /* Matrix Rain Background */
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            opacity: 0.2;
+        }
+
+        /* Responsive */
+        @media(max-width: 600px) {
+            h1.bad-title { font-size: 3rem; }
+            .hero-title { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="matrixCanvas"></canvas>
+
+    <div class="glitch-overlay" id="glitch"></div>
+
+    <div id="stage-bad">
+        <h1 class="bad-title">XCHIZZURU<br>ЛОХ</h1>
+        <p class="bad-desc">СИСТЕМНЫЙ АНАЛИЗ ЗАВЕРШЕН. СТАТУС: ПРОВАЛ.</p>
+        <button class="trigger-btn" onclick="revealTruth()">ПРОВЕРИТЬ ДАННЫЕ СНОВА</button>
+    </div>
+
+    <div id="stage-good">
+        <h1 class="hero-title">СИСТЕМА ВЗЛОМАНА<br><span>XCHIZZURU ЛЕГЕНДА</span></h1>
+        
+        <div class="card-container">
+            <div class="arg-card" style="animation-delay: 0.5s;">
+                <div class="arg-title">IQ > 9000</div>
+                <p>Его мозг обрабатывает мемы быстрее, чем квантовый компьютер NASA.</p>
+            </div>
+            <div class="arg-card" style="animation-delay: 0.8s;">
+                <div class="arg-title">МАСТЕР ХАРИЗМЫ</div>
+                <p>Ему не нужно писать девушкам, операторы сотовой связи сами отправляют им его номер.</p>
+            </div>
+            <div class="arg-card" style="animation-delay: 1.1s;">
+                <div class="arg-title">СТИЛЬ БОГА</div>
+                <p>Gucci и Balenciaga советуются с ним перед выпуском новых коллекций.</p>
+            </div>
+        </div>
+
+        <a href="https://instagram.com/xchizzuru" target="_blank" class="insta-link">ПОДПИСАТЬСЯ НА ЛЕГЕНДУ @xchizzuru</a>
+    </div>
+
+    <script>
+        // Matrix Background Animation
+        const canvas = document.getElementById('matrixCanvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
+        const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        const nums = '0123456789';
+        const alphabet = katakana + latin + nums;
+
+        const fontSize = 16;
+        const columns = canvas.width/fontSize;
+
+        const rainDrops = [];
+        for( let x = 0; x < columns; x++ ) {
+            rainDrops[x] = 1;
+        }
+
+        const draw = () => {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#0F0';
+            ctx.font = fontSize + 'px monospace';
+
+            for(let i = 0; i < rainDrops.length; i++)
+            {
+                const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+                ctx.fillText(text, i*fontSize, rainDrops[i]*fontSize);
+
+                if(rainDrops[i]*fontSize > canvas.height && Math.random() > 0.975){
+                    rainDrops[i] = 0;
+                }
+                rainDrops[i]++;
+            }
+        };
+
+        setInterval(draw, 30);
+
+        // TRANSITION LOGIC
+        function revealTruth() {
+            const badStage = document.getElementById('stage-bad');
+            const goodStage = document.getElementById('stage-good');
+            const glitch = document.getElementById('glitch');
+            const btn = document.querySelector('.trigger-btn');
+
+            // 1. Play glitch visual
+            btn.innerText = "ЗАГРУЗКА...";
+            btn.style.borderColor = "#fff";
+            btn.style.color = "#fff";
+            
+            setTimeout(() => {
+                glitch.style.display = 'block';
+                
+                // Intense flickering
+                let flickerCount = 0;
+                let interval = setInterval(() => {
+                    glitch.style.background = flickerCount % 2 === 0 ? '#000' : '#fff';
+                    flickerCount++;
+                    if (flickerCount > 10) {
+                        clearInterval(interval);
+                        finishTransition();
+                    }
+                }, 50);
+            }, 500);
+
+            function finishTransition() {
+                badStage.style.display = 'none';
+                glitch.style.display = 'none';
+                goodStage.style.display = 'block';
+
+                // Change background color smoothly
+                document.body.style.backgroundColor = "#000510";
+
+                // Trigger animations for cards
+                const cards = document.querySelectorAll('.arg-card');
+                cards.forEach(card => {
+                    card.style.animation = `cardPop 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards`;
+                    card.style.animationDelay = card.style.animationDelay; // trigger reflow
+                });
+            }
+        }
+    </script>
+</body>
+</html>

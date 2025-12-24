@@ -3,329 +3,406 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XCHIZZURU: ANALYSIS</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Russo+One&display=swap" rel="stylesheet">
+    <title>XCHIZZURU // ARCHIVE</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Syncopate:wght@700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #050505;
-            --text-color: #ffffff;
-            --accent-bad: #ff0f0f;
-            --accent-good: #00f2ff;
-            --accent-gold: #ffd700;
+            --bg: #0a0a0a;
+            --text-main: #f0f0f0;
+            --accent-bad: #ff2a6d; /* Кибер-розовый */
+            --accent-good: #05d9e8; /* Неон-циан */
+            --acid: #d1ff00; /* Кислотный лайм */
+            --font-main: 'Space Grotesk', sans-serif;
+            --font-display: 'Syncopate', sans-serif;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; } /* Скрываем курсор для кастомного */
 
         body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            overflow: hidden;
+            background-color: var(--bg);
+            color: var(--text-main);
+            font-family: var(--font-main);
+            overflow: hidden; /* Сначала скрываем скролл */
+            width: 100vw;
             height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            perspective: 1000px;
         }
 
-        /* --- STAGE 1: THE BAD (LOH) --- */
-        #stage-bad {
-            position: absolute;
-            text-align: center;
-            z-index: 10;
-            transition: opacity 0.5s;
+        /* --- CUSTOM CURSOR --- */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--text-main);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s, background 0.3s;
+            mix-blend-mode: difference;
+        }
+        .cursor.hovered {
+            width: 50px;
+            height: 50px;
+            background: var(--text-main);
+            border-color: transparent;
         }
 
-        h1.bad-title {
-            font-family: 'Russo One', sans-serif;
-            font-size: 5rem;
-            color: var(--accent-bad);
-            text-transform: uppercase;
-            text-shadow: 2px 2px 0px #fff;
-            animation: shake 0.5s infinite;
-            margin-bottom: 20px;
-        }
-
-        .bad-desc {
-            font-size: 1.2rem;
-            opacity: 0.7;
-            margin-bottom: 40px;
-            letter-spacing: 2px;
-        }
-
-        .trigger-btn {
-            background: transparent;
-            border: 2px solid var(--accent-bad);
-            color: var(--accent-bad);
-            padding: 15px 40px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            cursor: pointer;
-            text-transform: uppercase;
-            transition: all 0.3s;
-            font-family: 'Russo One', sans-serif;
-            box-shadow: 0 0 10px var(--accent-bad);
-        }
-
-        .trigger-btn:hover {
-            background: var(--accent-bad);
-            color: #000;
-            box-shadow: 0 0 30px var(--accent-bad);
-        }
-
-        /* --- STAGE 2: THE GOOD (COOL) --- */
-        #stage-good {
-            display: none;
-            text-align: center;
-            width: 100%;
-            max-width: 800px;
-            z-index: 20;
-            padding: 20px;
-        }
-
-        .hero-title {
-            font-family: 'Russo One', sans-serif;
-            font-size: 4rem;
-            color: transparent;
-            -webkit-text-stroke: 2px var(--accent-good);
-            text-transform: uppercase;
-            margin-bottom: 20px;
-            position: relative;
-            animation: textReveal 1s ease-out forwards;
-        }
-
-        .hero-title span {
-            color: var(--accent-good);
-            text-shadow: 0 0 20px var(--accent-good);
-        }
-
-        .card-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin: 40px 0;
-        }
-
-        .arg-card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--accent-good);
-            padding: 20px;
-            border-radius: 15px;
-            transform: translateY(50px);
-            opacity: 0;
-            backdrop-filter: blur(5px);
-            transition: transform 0.3s;
-        }
-
-        .arg-card:hover {
-            transform: scale(1.05) !important;
-            box-shadow: 0 0 20px rgba(0, 242, 255, 0.3);
-            background: rgba(0, 242, 255, 0.1);
-        }
-
-        .arg-title {
-            color: var(--accent-gold);
-            font-weight: 900;
-            font-size: 1.1rem;
-            margin-bottom: 10px;
-        }
-
-        .insta-link {
-            display: inline-block;
-            margin-top: 30px;
-            text-decoration: none;
-            color: #fff;
-            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-            padding: 15px 50px;
-            border-radius: 50px;
-            font-weight: bold;
-            font-size: 1.2rem;
-            animation: float 3s ease-in-out infinite;
-            box-shadow: 0 10px 30px rgba(220, 39, 67, 0.5);
-            transition: transform 0.2s;
-        }
-
-        .insta-link:hover {
-            transform: scale(1.1);
-        }
-
-        /* --- ANIMATIONS --- */
-        @keyframes shake {
-            0% { transform: translate(1px, 1px) rotate(0deg); }
-            10% { transform: translate(-1px, -2px) rotate(-1deg); }
-            20% { transform: translate(-3px, 0px) rotate(1deg); }
-            30% { transform: translate(3px, 2px) rotate(0deg); }
-            40% { transform: translate(1px, -1px) rotate(1deg); }
-            50% { transform: translate(-1px, 2px) rotate(-1deg); }
-            60% { transform: translate(-3px, 1px) rotate(0deg); }
-            70% { transform: translate(3px, 1px) rotate(-1deg); }
-            80% { transform: translate(-1px, -1px) rotate(1deg); }
-            90% { transform: translate(1px, 2px) rotate(0deg); }
-            100% { transform: translate(1px, -2px) rotate(-1deg); }
-        }
-
-        @keyframes textReveal {
-            0% { letter-spacing: -20px; opacity: 0; filter: blur(10px); }
-            100% { letter-spacing: 5px; opacity: 1; filter: blur(0px); }
-        }
-
-        @keyframes cardPop {
-            0% { transform: translateY(50px) scale(0.8); opacity: 0; }
-            100% { transform: translateY(0) scale(1); opacity: 1; }
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        /* Glitch Overlay */
-        .glitch-overlay {
+        /* --- BACKGROUND NOISE & GRADIENTS --- */
+        .noise {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: #fff;
-            z-index: 100;
-            display: none;
-            mix-blend-mode: exclusion;
+            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MDAiIGhlaWdodD0iNTAwIj48ZmlsdGVyIGlkPSJnoiPjxmZVR1cmJ1bGVuY2UgdHlwZT0iZnJhY3RhbE5vaXNlIiBiYXNlRnJlcXVlbmN5PSIwLjY1IiBudW1PY3RhdmVzPSIzIiBzdGl0Y2hUaWxlcz0ic3RpdGNoIi8+PC9maWx0ZXI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsdGVyPSJ1cmwoI2cpIiBvcGFjaXR5PSIwLjAzIi8+PC9zdmc+');
+            pointer-events: none;
+            z-index: 90;
         }
-
-        /* Matrix Rain Background */
-        canvas {
+        
+        .blob {
             position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 1;
-            opacity: 0.2;
+            filter: blur(80px);
+            opacity: 0.6;
+            animation: moveBlob 10s infinite alternate;
+            border-radius: 50%;
+        }
+        .blob-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: purple; }
+        .blob-2 { bottom: -10%; right: -10%; width: 60vw; height: 60vw; background: blue; animation-delay: -5s; }
+
+        /* --- SCENE 1: THE ROAST (BAD) --- */
+        #scene-bad {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            transition: transform 1s cubic-bezier(0.7, 0, 0.3, 1);
         }
 
-        /* Responsive */
-        @media(max-width: 600px) {
-            h1.bad-title { font-size: 3rem; }
-            .hero-title { font-size: 2rem; }
+        .marquee-container {
+            position: absolute;
+            top: 20%;
+            width: 100%;
+            overflow: hidden;
+            transform: rotate(-5deg);
+            opacity: 0.3;
         }
+        
+        .marquee-text {
+            font-family: var(--font-display);
+            font-size: 8rem;
+            white-space: nowrap;
+            display: inline-block;
+            color: transparent;
+            -webkit-text-stroke: 2px var(--accent-bad);
+            animation: scrollText 10s linear infinite;
+        }
+
+        .center-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 3rem;
+            text-align: center;
+            max-width: 600px;
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+        }
+
+        .glitch-header {
+            font-family: var(--font-display);
+            font-size: 4rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            position: relative;
+            color: var(--text-main);
+            mix-blend-mode: overlay;
+        }
+
+        .glitch-header::before, .glitch-header::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0.8;
+        }
+        .glitch-header::before { color: var(--accent-bad); z-index: -1; transform: translate(-2px, 2px); }
+        .glitch-header::after { color: blue; z-index: -2; transform: translate(2px, -2px); }
+
+        .sub-text {
+            font-size: 1.2rem;
+            margin: 20px 0;
+            line-height: 1.6;
+            color: #aaa;
+        }
+
+        .btn-modern {
+            margin-top: 30px;
+            padding: 20px 40px;
+            font-family: var(--font-display);
+            font-size: 1rem;
+            background: transparent;
+            color: var(--text-main);
+            border: 2px solid var(--text-main);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-modern::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 0%; height: 100%;
+            background: var(--text-main);
+            transition: 0.4s;
+            z-index: -1;
+        }
+
+        .btn-modern:hover { color: var(--bg); }
+        .btn-modern:hover::after { width: 100%; }
+
+        /* --- SCENE 2: THE FLEX (GOOD) --- */
+        #scene-good {
+            position: absolute;
+            top: 100vh; /* Спрятан внизу */
+            left: 0;
+            width: 100%;
+            min-height: 100vh;
+            background: #000;
+            z-index: 20;
+            transition: transform 1s cubic-bezier(0.7, 0, 0.3, 1);
+            overflow-y: auto;
+            padding-bottom: 50px;
+        }
+
+        .hero-section {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .giant-text {
+            font-family: var(--font-display);
+            font-size: 12vw;
+            line-height: 0.8;
+            text-align: center;
+            text-transform: uppercase;
+            background: linear-gradient(to right, #fff, #999);
+            -webkit-background-clip: text;
+            color: transparent;
+            opacity: 0; /* JS Animation */
+            transform: translateY(100px);
+        }
+
+        .status-badge {
+            position: absolute;
+            top: 10%;
+            right: 10%;
+            background: var(--acid);
+            color: #000;
+            padding: 10px 20px;
+            font-weight: bold;
+            transform: rotate(15deg);
+            border-radius: 50px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 0 5vw;
+            margin-top: -10vh;
+        }
+
+        .argument {
+            background: #111;
+            border: 1px solid #333;
+            padding: 40px;
+            transition: 0.5s;
+        }
+        .argument:hover {
+            border-color: var(--acid);
+            transform: translateY(-10px);
+        }
+        .arg-num { font-size: 4rem; font-weight: bold; color: #222; margin-bottom: 20px; }
+        .arg-head { font-size: 1.5rem; color: var(--acid); margin-bottom: 15px; font-weight: 700; }
+        .arg-body { color: #888; font-size: 1rem; line-height: 1.5; }
+
+        .insta-btn-container {
+            display: flex;
+            justify-content: center;
+            margin: 100px 0;
+        }
+        
+        .insta-super-btn {
+            font-size: 2rem;
+            text-decoration: none;
+            color: white;
+            padding: 30px 60px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 100px;
+            background: linear-gradient(90deg, #ff00cc, #333399);
+            background-size: 200% 200%;
+            animation: gradientAnim 3s ease infinite;
+            transition: transform 0.3s;
+        }
+        .insta-super-btn:hover { transform: scale(1.05) rotate(-2deg); }
+
+        /* --- ANIMATIONS --- */
+        @keyframes scrollText { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        @keyframes moveBlob { from { transform: translate(0,0) scale(1); } to { transform: translate(50px, 50px) scale(1.2); } }
+        @keyframes float { 0%,100%{transform:rotate(15deg) translateY(0);} 50%{transform:rotate(15deg) translateY(-20px);} }
+        @keyframes gradientAnim { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+
+        /* --- UTILS --- */
+        .hidden { display: none; }
+        
     </style>
 </head>
 <body>
 
-    <canvas id="matrixCanvas"></canvas>
+    <div class="cursor" id="cursor"></div>
+    <div class="noise"></div>
+    
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
 
-    <div class="glitch-overlay" id="glitch"></div>
-
-    <div id="stage-bad">
-        <h1 class="bad-title">XCHIZZURU<br>ЛОХ</h1>
-        <p class="bad-desc">СИСТЕМНЫЙ АНАЛИЗ ЗАВЕРШЕН. СТАТУС: ПРОВАЛ.</p>
-        <button class="trigger-btn" onclick="revealTruth()">ПРОВЕРИТЬ ДАННЫЕ СНОВА</button>
-    </div>
-
-    <div id="stage-good">
-        <h1 class="hero-title">СИСТЕМА ВЗЛОМАНА<br><span>XCHIZZURU ЛЕГЕНДА</span></h1>
-        
-        <div class="card-container">
-            <div class="arg-card" style="animation-delay: 0.5s;">
-                <div class="arg-title">IQ > 9000</div>
-                <p>Его мозг обрабатывает мемы быстрее, чем квантовый компьютер NASA.</p>
-            </div>
-            <div class="arg-card" style="animation-delay: 0.8s;">
-                <div class="arg-title">МАСТЕР ХАРИЗМЫ</div>
-                <p>Ему не нужно писать девушкам, операторы сотовой связи сами отправляют им его номер.</p>
-            </div>
-            <div class="arg-card" style="animation-delay: 1.1s;">
-                <div class="arg-title">СТИЛЬ БОГА</div>
-                <p>Gucci и Balenciaga советуются с ним перед выпуском новых коллекций.</p>
+    <div id="scene-bad">
+        <div class="marquee-container">
+            <div class="marquee-text">
+                LOSER DETECTED /// NO AURA /// ZERO RIZZ /// LOSER DETECTED /// NO AURA /// ZERO RIZZ ///
             </div>
         </div>
 
-        <a href="https://instagram.com/xchizzuru" target="_blank" class="insta-link">ПОДПИСАТЬСЯ НА ЛЕГЕНДУ @xchizzuru</a>
+        <div class="center-card" id="card">
+            <p style="letter-spacing: 5px; color: var(--accent-bad); font-weight: 700;">PROFILE ANALYSIS</p>
+            <h1 class="glitch-header" data-text="XCHIZZURU">XCHIZZURU</h1>
+            <h2 style="font-size: 3rem; margin-bottom: 20px;">IS A <span style="background: var(--text-main); color: #000; padding: 0 10px;">LOH</span></h2>
+            
+            <div class="sub-text">
+                Статистика показывает критическое отсутствие стиля. <br> 
+                Уровень крутости: -404. <br>
+                Рекомендация: Удалить аккаунт.
+            </div>
+
+            <button class="btn-modern" onclick="switchTimeline()">INITIATE RE-SCAN</button>
+        </div>
+    </div>
+
+    <div id="scene-good">
+        <div class="hero-section">
+            <div class="status-badge">VERIFIED LEGEND</div>
+            <h1 class="giant-text">WAIT,<br>HE IS<br><span style="color: var(--acid);">THE GOAT</span></h1>
+            <p style="margin-top: 20px; font-size: 1.2rem; opacity: 0.7;">[ SYSTEM CORRECTION COMPLETE ]</p>
+        </div>
+
+        <div class="content-grid">
+            <div class="argument">
+                <div class="arg-num">01</div>
+                <div class="arg-head">AURA UNLIMITED</div>
+                <div class="arg-body">
+                    Произошла ошибка в вычислениях. Его аура настолько мощная, что сломала наш детектор лохов. Извините.
+                </div>
+            </div>
+            <div class="argument">
+                <div class="arg-num">02</div>
+                <div class="arg-head">MAIN CHARACTER</div>
+                <div class="arg-body">
+                    Xchizzuru не следует трендам. Тренды спрашивают у него разрешения, прежде чем появиться в ТикТоке.
+                </div>
+            </div>
+            <div class="argument">
+                <div class="arg-num">03</div>
+                <div class="arg-head">VISUAL GOD</div>
+                <div class="arg-body">
+                    Каждая его сторис — это арт-объект, который продают на аукционах за миллионы долларов (в будущем).
+                </div>
+            </div>
+             <div class="argument">
+                <div class="arg-num">04</div>
+                <div class="arg-head">FACTS ONLY</div>
+                <div class="arg-body">
+                    Если он скажет, что небо зеленое, небо покраснеет от стыда и станет зеленым.
+                </div>
+            </div>
+        </div>
+
+        <div class="insta-btn-container">
+            <a href="https://instagram.com/xchizzuru" target="_blank" class="insta-super-btn">
+                JOIN THE CULT @XCHIZZURU
+            </a>
+        </div>
     </div>
 
     <script>
-        // Matrix Background Animation
-        const canvas = document.getElementById('matrixCanvas');
-        const ctx = canvas.getContext('2d');
+        // --- CUSTOM CURSOR LOGIC ---
+        const cursor = document.getElementById('cursor');
+        
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
 
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        const hoverables = document.querySelectorAll('a, button');
+        hoverables.forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+        });
 
-        const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
-        const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        const nums = '0123456789';
-        const alphabet = katakana + latin + nums;
-
-        const fontSize = 16;
-        const columns = canvas.width/fontSize;
-
-        const rainDrops = [];
-        for( let x = 0; x < columns; x++ ) {
-            rainDrops[x] = 1;
-        }
-
-        const draw = () => {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            ctx.fillStyle = '#0F0';
-            ctx.font = fontSize + 'px monospace';
-
-            for(let i = 0; i < rainDrops.length; i++)
-            {
-                const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
-                ctx.fillText(text, i*fontSize, rainDrops[i]*fontSize);
-
-                if(rainDrops[i]*fontSize > canvas.height && Math.random() > 0.975){
-                    rainDrops[i] = 0;
-                }
-                rainDrops[i]++;
-            }
-        };
-
-        setInterval(draw, 30);
-
-        // TRANSITION LOGIC
-        function revealTruth() {
-            const badStage = document.getElementById('stage-bad');
-            const goodStage = document.getElementById('stage-good');
-            const glitch = document.getElementById('glitch');
-            const btn = document.querySelector('.trigger-btn');
-
-            // 1. Play glitch visual
-            btn.innerText = "ЗАГРУЗКА...";
-            btn.style.borderColor = "#fff";
-            btn.style.color = "#fff";
+        // --- PARALLAX EFFECT ON CARD ---
+        const card = document.getElementById('card');
+        document.addEventListener('mousemove', (e) => {
+            if(document.getElementById('scene-bad').style.transform === 'translateY(-100vh)') return;
             
+            const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+            const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+            card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+        });
+
+        // --- SWITCH TIMELINE LOGIC ---
+        function switchTimeline() {
+            const badScene = document.getElementById('scene-bad');
+            const goodScene = document.getElementById('scene-good');
+            const btn = document.querySelector('.btn-modern');
+            const giantText = document.querySelector('.giant-text');
+            const args = document.querySelectorAll('.argument');
+
+            btn.innerText = "UPDATING REALITY...";
+            
+            // Effect: Rapid zoom out / fade
             setTimeout(() => {
-                glitch.style.display = 'block';
+                badScene.style.transform = "translateY(-100vh)"; // Slide UP
+                goodScene.style.transform = "translateY(0)"; // Slide IN from bottom
                 
-                // Intense flickering
-                let flickerCount = 0;
-                let interval = setInterval(() => {
-                    glitch.style.background = flickerCount % 2 === 0 ? '#000' : '#fff';
-                    flickerCount++;
-                    if (flickerCount > 10) {
-                        clearInterval(interval);
-                        finishTransition();
-                    }
-                }, 50);
-            }, 500);
+                // Allow scrolling now
+                document.body.style.overflow = "auto";
+                document.body.style.overflowX = "hidden";
 
-            function finishTransition() {
-                badStage.style.display = 'none';
-                glitch.style.display = 'none';
-                goodStage.style.display = 'block';
+                // Animate Text in Scene 2
+                setTimeout(() => {
+                    giantText.style.transition = "all 1s ease";
+                    giantText.style.opacity = "1";
+                    giantText.style.transform = "translateY(0)";
+                }, 500);
 
-                // Change background color smoothly
-                document.body.style.backgroundColor = "#000510";
-
-                // Trigger animations for cards
-                const cards = document.querySelectorAll('.arg-card');
-                cards.forEach(card => {
-                    card.style.animation = `cardPop 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards`;
-                    card.style.animationDelay = card.style.animationDelay; // trigger reflow
+                // Staggered animation for cards
+                args.forEach((arg, index) => {
+                    arg.style.opacity = "0";
+                    arg.style.transform = "translateY(50px)";
+                    setTimeout(() => {
+                        arg.style.transition = "all 0.6s ease";
+                        arg.style.opacity = "1";
+                        arg.style.transform = "translateY(0)";
+                    }, 1000 + (index * 200));
                 });
-            }
+
+            }, 800);
         }
     </script>
 </body>
